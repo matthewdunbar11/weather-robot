@@ -1,7 +1,7 @@
 var MongoClient = require('mongodb').MongoClient;
 
 
-var url = 'mongodb://weather-robot:mvl6uUXrZVM3ZiDwdkvMttODyP4Kv7wjc0setRQ3BljzH29Dp6uxn7tZWYBpza2DLqlrfOkmcuvo6jeEh2ff9w==@weather-robot.documents.azure.com:10255/weather?ssl=true&replicaSet=globaldb';
+var url = 'mongodb://mongo:27017/weather-import';
 
 MongoClient.connect(url, function(err, db) {
     if(err === null) {
@@ -29,20 +29,6 @@ MongoClient.connect(url, function(err, db) {
         });
 
         rtm.start();
-
-
-        var http = require('http');
-        
-        //step 2) start the server
-        http.createServer(function (req, res) {
-        
-        //set an HTTP header of 200 and the meta type
-        res.writeHead(200, {'Content-Type': 'text/plain'});
-        
-        //write something to the request and end it
-        res.end('Your node.js server is running on localhost:80');
-        
-        }).listen(80);//step 3) listen for a request on port 3000
 
 
 
