@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+  - "node"
+deploy:
+  provider: heroku
+  api_key:
+    secure: Z2mi8LoKGKdQOZ+J2/zYeF0K9y1yfEYiF4e72r2BqffFI1Hzj9i/vsOErTn29fvEeeQJO18unnAnlWroXoOTX7r0lymEDB9EcN0jqCwhsi4LEiCQWoV06fng7/yskm/LZiu6qIALMHzZPSr4EtprcTlxfH7bgRyv/zxuK6MZOYgjyFG9QrI7VwyEh+gK4KJNN1KfbyfIqbzFI8nfAiWVclfM8sIOxTAzHRbrYL+Ps9JzgLv6Qi3fwP1m3sZPWFqckRgNEHXNBoL+sewkNTbHvXZcVZF/9FBE2TIl/n0tt5fTyGtYuXyP2ReO9brczmP7GpX/eDhtVVgu01n2ZLIktqSZIMxDTC21psobOrD9XRYHo1ErFdfUnB+UE3JhffV9sRIxjIFdrbGtu4jWSAEPlyjUj/M4+b7LVsg45C6WxVbnb7apnknqHDTKxTlY9oPam7koR+/Wi+Dro3zRm4ChAZfSuhjXsE1nz+9E9T0dzhKBUh28MhEiyitdr1Akn78nt9Ejx5qisG3fzMqoMkxhbdqDgLxVh3pYp0dRy7QWJtGC5AdoBkRCTFmSRyIPh+fViQ8tsKviX361/+aX3gIVC7hQak1T+O7KbtULLFAIxzjXZs8pHKOn/yT1Nz2YaDxp0NAcBMKT/ONxZKihKlCPXRDYuMwdhP3CMWzfdmd4oPQ=
+  app: weather-robot
+  on:
+    repo: matthewdunbar11/weather-robot  
