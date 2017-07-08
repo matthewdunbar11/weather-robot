@@ -1,7 +1,8 @@
 var MongoClient = require('mongodb').MongoClient;
 
 
-var url = 'mongodb://mongo:27017/weather-import';
+//var url = 'mongodb://mongo:27017/weather-import';
+var url = process.env.MONGO_CONNECTION;
 
 MongoClient.connect(url, function(err, db) {
     if(err === null) {
