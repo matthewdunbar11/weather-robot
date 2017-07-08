@@ -3,8 +3,15 @@ var MongoClient = require('mongodb').MongoClient;
 
 const express = require('express');
 const app = express();
+
+var currentOperation = 'starting';
 app.get('/', function(req, res) {
     res.send('Hello world!');
+});
+
+
+app.get('/status', function(req, res) {
+    res.send(currentOperation);
 });
 
 app.listen(process.env.PORT || 3000, function() {
@@ -14,8 +21,11 @@ app.listen(process.env.PORT || 3000, function() {
 //var url = 'mongodb://mongo:27017/weather-import';
 var url = process.env.MONGO_CONNECTION;
 
+currentOperation = 'beginning mongo connect';
 MongoClient.connect(url, function(err, db) {
+
     if(err === null) {
+        currentOperation = 'mongo connected';
         console.log('Connected to mongo');
 
         var RTM = require("satori-sdk-js");
@@ -25,15 +35,19 @@ MongoClient.connect(url, function(err, db) {
         var channel = "full-weather";
 
         var rtm = new RTM(endpoint, appKey);
+        currentOperation = 'beginning satori subscription';
         rtm.on("enter-connected", function() {
-        console.log("Connected to RTM!");
+            currentOperation = 'connected to satori';
+            console.log("Connected to RTM!");
         });
 
         var subscription = rtm.subscribe(channel, RTM.SubscriptionMode.SIMPLE);
         var collection = db.collection('weather');
-        
-        subscription.on('rtm/subscription/data', function (pdu) {
+        var messagesReceived = 0;
+        subscription.on('rtm/subscription/data', function (pdu) {            
         pdu.body.messages.forEach(function (msg) {
+
+            currentOperation = 'successfully received ' + ++messagesReceived + ' messages';
             msg.time = new Date();            
             collection.insertOne(msg);
         });
@@ -43,6 +57,9 @@ MongoClient.connect(url, function(err, db) {
 
 
 
+    }
+    else {
+        currentOperation = 'mongo connect error: ' + err;
     }
 });
 
