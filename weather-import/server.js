@@ -19,7 +19,7 @@ app.listen(process.env.PORT || 3000, function() {
 })
 
 //var url = 'mongodb://mongo:27017/weather-import';
-var url = process.env.MONGO_CONNECTION;
+var url = process.env.MONGODB_URI || 'mongodb://mongo:27017/weather-import';
 
 currentOperation = 'beginning mongo connect';
 MongoClient.connect(url, function(err, db) {
@@ -32,7 +32,8 @@ MongoClient.connect(url, function(err, db) {
 
         var endpoint = "wss://open-data.api.satori.com";
         var appKey = "Ac4e9Db66FCBCF68B84fCd6aF9C36d36";
-        var channel = "full-weather";
+        //var channel = "full-weather";
+        var channel = "METAR-AWC-US";
 
         var rtm = new RTM(endpoint, appKey);
         currentOperation = 'beginning satori subscription';
@@ -43,17 +44,22 @@ MongoClient.connect(url, function(err, db) {
 
         var subscription = rtm.subscribe(channel, RTM.SubscriptionMode.SIMPLE);
         var collection = db.collection('weather');
-        var messagesReceived = 0;
-        subscription.on('rtm/subscription/data', function (pdu) {            
-        pdu.body.messages.forEach(function (msg) {
+        collection.createIndex({"station_id":1,"observation_time":1}, {unique: true}, function() {
 
-            currentOperation = 'successfully received ' + ++messagesReceived + ' messages';
-            msg.time = new Date();            
-            collection.insertOne(msg);
-        });
-        });
+            var messagesReceived = 0;
+            subscription.on('rtm/subscription/data', function (pdu) {            
+            pdu.body.messages.forEach(function (msg) {
 
-        rtm.start();
+                currentOperation = 'successfully received ' + ++messagesReceived + ' messages';
+                msg.time = new Date();            
+                collection.insertOne(msg);
+            });
+            });
+
+            rtm.start();
+
+        });
+        
 
 
 
