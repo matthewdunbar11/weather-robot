@@ -52,7 +52,9 @@ MongoClient.connect(url, function(err, db) {
 
                 currentOperation = 'successfully received ' + ++messagesReceived + ' messages';
                 msg.time = new Date();            
-                collection.insertOne(msg);
+                collection.insertOne(msg).catch(function(reason) {
+
+                });
             });
             });
 

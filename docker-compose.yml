@@ -11,3 +11,13 @@ services:
       - "8080:8080"
     depends_on:
       - mongo
+  weather-transform:
+    build: './weather-transform'
+    ports:
+      - "8070:8070"
+    depends_on:
+      - mongo
+  tensorflow:
+    build: './tensorflow'
+    ports:
+      - "8888:8888"
